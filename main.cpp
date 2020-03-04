@@ -54,17 +54,40 @@ void menu(){
 	cout << "5. PRINT RECEIPT\n";
 	cout << "QUIT\n";
 	cin >> choice;
+	switch (choice) {
+		case 1:
+			cout << "What is the Flight's City of Origin? : \n";
+			cout << "What is the Flight's City of Destination : \n";
+			break;
+	}
+	
 }
 
+
+
 void PlaceCursor(const int x, const int y) {
-
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
     COORD PlaceCursorHere;
     PlaceCursorHere.X = x;
     PlaceCursorHere.Y = y;
-
     SetConsoleCursorPosition(hConsole, PlaceCursorHere);
     return;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
