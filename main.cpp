@@ -8,36 +8,54 @@ using namespace std;
 string admin;
 string pass;
 int choice;
+ofstream outfile("adminData.txt", std::ios_base::app);
+ifstream file("adminData.txt");
 
 //FUNCTIONS
 void menu();
 void PlaceCursor(const int x, const int y); // in case we want to position every text
-bool login(const string &username, const string &password);
+bool checklogin(const string &username, const string &password);
 void logo();
+void reg();
+void login();
 
 int main(){ // main function
+	int c;
 	logo();
-	system("pause");
-	cout << "User Name: ";
-	cin >> admin;
-	cout << "Password: ";
-	cin >> pass;
-	bool loginpwe = login(admin,pass);
+	cout << "				1 - LOG IN\n";
+	cout << "				2 - CREATE AN ACCOUNT\n				CHOICE: ";
+	cin >> c;
+	switch (c){
+		case 1:
+			login();
+			break;
+		case 2:
+			reg();
+			cout << "				Your account has been made!\n";
+			system("pause");
+			system("cls");
+			logo();
+			login();
+			break;
+		default:
+			cout << "INVALID CHOICE!";
+			break;
+	}
+
+	bool loginpwe = checklogin(admin,pass);
 	if(loginpwe){
-		cout << "WELCOME " << admin << endl;
+		cout << "\n				WELCOME " << admin << endl;
 		system("pause");
 		system("cls");
 		menu();
 	} else {
-		cout << "INVALID USER CREDENTIALS";
+		cout << "\n				INVALID USER CREDENTIALS";
 	}
 }
 
 
-bool login(const string &username, const string &password) {
-    ifstream file("adminData.txt");
+bool checklogin(const string &username, const string &password) {
     std::string fusername, fpassword;
-
     while (file) {
         getline(file, fusername, ';'); 
         getline(file, fpassword); 
@@ -76,7 +94,6 @@ void PlaceCursor(const int x, const int y) {
     return;
 }
 
-
 void logo() {
 	cout << "______  ___             ______             ____________                                        \n";
 	cout << "___   |/  /___  ___________  /_________    ___    |__(_)_________      _______ _____  _________\n";
@@ -84,7 +101,25 @@ void logo() {
 	cout << "_  /  / / / /_/ /_(__  )_  ,<  _(__  )     _  ___ |  / _  /   __ |/ |/ // /_/ /_  /_/ /_(__  )\n";
 	cout << "/_/  /_/  \\__,_/ /____/ /_/|_| /____/      /_/  |_/_/  /_/    ____/|__/ \\__,_/ _\\__, / /____/\n";
 	cout << "                                                                               /____/        \n";
-	
+}
+
+void reg(){
+	string nUser;
+	string nPass;
+	cout << "				Create a User Name: ";
+	cin >> nUser;
+	cout << "				Create a Password: ";
+	cin >> nPass;
+	outfile << nUser << ";" <<nPass << endl;
+	outfile.close();
+}
+
+void login() {
+	cout << "				LOG IN:\n\n";
+	cout << "				User Name: ";
+	cin >> admin;
+	cout << "				Password: ";
+	cin >> pass;
 }
 
 
