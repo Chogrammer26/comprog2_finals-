@@ -1,6 +1,8 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+#include <ctime> // for time function
+#include <cstdlib> // for srand
 #include <fstream> //for IO of file
 using namespace std;
 
@@ -17,13 +19,15 @@ void PlaceCursor(const int x, const int y); // in case we want to position every
 bool checklogin(const string &username, const string &password);
 void logo();
 void reg();
+void makeReg();
 void login();
+void getRandomCode();
 
 int main(){ // main function
 	int c;
 	logo();
-	cout << "				1 - LOG IN\n";
-	cout << "				2 - CREATE AN ACCOUNT\n				CHOICE: ";
+	cout << "\t\t\t\t1 - LOG IN\n";
+	cout << "\t\t\t\t2 - CREATE AN ACCOUNT\n\t\t\t\tCHOICE: ";
 	cin >> c;
 	switch (c){
 		case 1:
@@ -31,7 +35,7 @@ int main(){ // main function
 			break;
 		case 2:
 			reg();
-			cout << "				Your account has been made!\n";
+			cout << "\t\t\t\tYour account has been made!\n";
 			system("pause");
 			system("cls");
 			logo();
@@ -42,20 +46,20 @@ int main(){ // main function
 			break;
 	}
 
-	bool loginpwe = checklogin(admin,pass);
-	if(loginpwe){
-		cout << "\n				WELCOME " << admin << endl;
-		system("pause");
+	bool logincheck = checklogin(admin,pass);
+	if(logincheck){
+		cout << "\n\t\t\t\tWELCOME " << admin << endl;
+		cout << "\t\t\t\t" << system("pause");
 		system("cls");
 		menu();
 	} else {
-		cout << "\n				INVALID USER CREDENTIALS";
+		cout << "\n\t\t\t\tINVALID USER CREDENTIALS";
 	}
 }
 
 
 bool checklogin(const string &username, const string &password) {
-    std::string fusername, fpassword;
+    string fusername, fpassword;
     while (file) {
         getline(file, fusername, ';'); 
         getline(file, fpassword); 
@@ -76,8 +80,6 @@ void menu(){
 	cin >> choice;
 	switch (choice) {
 		case 1:
-			cout << "What is the Flight's City of Origin? : \n";
-			cout << "What is the Flight's City of Destination : \n";
 			break;
 	}
 	
@@ -93,6 +95,16 @@ void PlaceCursor(const int x, const int y) {
     SetConsoleCursorPosition(hConsole, PlaceCursorHere);
     return;
 }
+
+void makeReg(){
+	cout << "SELECT:\n";
+	cout << "1 - ROUND TRIP\n";
+	cout << "2 - ONE WAY\n";
+	
+}
+
+
+
 
 void logo() {
 	cout << "______  ___             ______             ____________                                        \n";
@@ -115,16 +127,22 @@ void reg(){
 }
 
 void login() {
-	cout << "				LOG IN:\n\n";
-	cout << "				User Name: ";
+	cout << "\t\t\t\tLOG IN:\n\n";
+	cout << "\t\t\t\tUser Name: ";
 	cin >> admin;
-	cout << "				Password: ";
+	cout << "\t\t\t\tPassword: ";
 	cin >> pass;
 }
 
-
-
-
+void getRandomCode(){
+	int i;
+	char cmptchoice[5];
+	srand(time(NULL));
+    for (i=0; i<5; i++){
+		cmptchoice [i] = (90 - (rand() % 26));
+    }
+    cout << cmptchoice;
+}
 
 
 
