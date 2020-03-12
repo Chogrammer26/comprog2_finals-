@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <string>
 #include <windows.h>
 #include <ctime> // for time function
 #include <cstdlib> // for srand
@@ -10,10 +11,21 @@ using namespace std;
 string admin;
 string pass;
 int choice;
+int numPassenger;
+
 ofstream outfile("adminData.txt", std::ios_base::app);
 ifstream file("adminData.txt");
 
+class Data{
+	public:
+	string flyF;
+	string flyT,depOn,retOn;
+	int adult,child,infant;
+};
+
+
 //FUNCTIONS
+void outReceipt();
 void menu();
 void PlaceCursor(const int x, const int y); // in case we want to position every text
 bool checklogin(const string &username, const string &password);
@@ -23,6 +35,7 @@ void makeReg();
 void pickTime();
 void login();
 void getRandomCode();
+
 
 int main(){ // main function
 	int c;
@@ -49,8 +62,8 @@ int main(){ // main function
 
 	bool logincheck = checklogin(admin,pass);
 	if(logincheck){
-		cout << "\n\t\t\t\tWELCOME " << admin << endl;
-		cout << "\t\t\t\t" << system("pause");
+		cout << "\n\t\t\t\tWELCOME BACK " << admin << endl;
+		cout << "\t\t\t\t." << system("pause");
 		system("cls");
 		menu();
 	} else {
@@ -72,15 +85,18 @@ bool checklogin(const string &username, const string &password) {
 }
 
 void menu(){
-	cout << "1. MAKE RESERVATION\n";
-	cout << "2. CANCEL RESERVATION\n";
-	cout << "3. SEARCH PASSENGER\n";
-	cout << "4. CHANGE RESERVATION\n";
-	cout << "5. PRINT RECEIPT\n";
-	cout << "QUIT\n";
+	logo();
+	cout << "\t\t\t\t1 - MAKE RESERVATION\n";
+	cout << "\t\t\t\t2 - CANCEL RESERVATION\n";
+	cout << "\t\t\t\t3 - SEARCH PASSENGER\n";
+	cout << "\t\t\t\t4 - CHANGE RESERVATION\n";
+	cout << "\t\t\t\t5 - PRINT RECEIPT\n";
+	cout << "\t\t\t\t6 - QUIT";
 	cin >> choice;
+	system ("cls");
 	switch (choice) {
 		case 1:
+			makeReg();
 			break;
 	}
 	
@@ -98,27 +114,46 @@ void PlaceCursor(const int x, const int y) {
 }
 
 void makeReg(){
+	Data info;
 	int c;
-	cout << "SELECT:\n";
-	cout << "1 - ROUND TRIP\n";
-	cout << "2 - ONE WAY\n";
+	logo();
+	cout << "\t\t\t\tSELECT:\n";
+	cout << "\t\t\t\t1 - ROUND TRIP\n";
+	cout << "\t\t\t\t2 - ONE WAY";
+	cin >> c;
+	system ("cls");
 	switch(c){
 		case 1:
 			cout << "\t\t\t\tFLYING FROM: ";
+			cin >> info.flyF;
 			cout << "\t\t\t\tFLYING TO: ";
+			cin >> info.flyT;
 			cout << "\t\t\t\tDEPARTING ON: ";
-			cout << "\t\t\t\tRETURNING ON: ;
-			cout << "\t\t\t\tADULT: ;
+			cin >> info.depOn;
+			cout << "\t\t\t\tRETURNING ON: ";
+			cin >> info.retOn;
+			cout << "\t\t\t\tADULT: ";
+			cin >> info.adult;
 			cout << "\t\t\t\tCHILD(2-11years): ";
+			cin >> info.child;
 			cout << "\t\t\t\tINFANT(under 2years): ";
+			cin >> info.infant;
+			numPassenger = info.child + info.adult + info.infant;
 			break;
 		case 2:
 			cout << "\t\t\t\tFLYING FROM: ";
+			cin >> info.flyF;
 			cout << "\t\t\t\tFLYING TO: ";
+			cin >> info.flyT;
 			cout << "\t\t\t\tDEPARTING ON: ";
-			cout << "\t\t\t\tADULT: ;
+			cin >> info.depOn;
+			cout << "\t\t\t\tADULT: ";
+			cin >> info.adult;
 			cout << "\t\t\t\tCHILD(2-11years): ";
+			cin >> info.child;
 			cout << "\t\t\t\tINFANT(under 2years): ";
+			cin >> info.infant;
+			numPassenger = info.child + info.adult + info.infant;
 			break;
 		default:
 			break;
@@ -151,7 +186,7 @@ void reg(){
 }
 
 void login() {
-	cout << "\t\t\t\tLOG IN:\n\n";
+	cout << "\n\t\t\t\tLOG IN:\n\n";
 	cout << "\t\t\t\tUser Name: ";
 	cin >> admin;
 	cout << "\t\t\t\tPassword: ";
@@ -175,6 +210,10 @@ void pickTime(){
 	cout << "\t\t\t\t4 - 2pm \n";
 	cout << "\t\t\t\t5 - 5pm \n";
 	cout << "\t\t\t\t6 - 8pm \n";
+}
+
+void outReciept(){
+	
 }
 
 
