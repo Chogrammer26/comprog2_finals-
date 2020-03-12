@@ -11,6 +11,7 @@ using namespace std;
 string admin;
 string pass;
 int choice;
+int c;
 int numPassenger;
 
 ofstream outfile("adminData.txt", std::ios_base::app);
@@ -20,6 +21,7 @@ class Data{
 	public:
 	string flyF;
 	string flyT,depOn,retOn;
+	string depTime,retTime;
 	int adult,child,infant;
 };
 
@@ -32,16 +34,17 @@ bool checklogin(const string &username, const string &password);
 void logo();
 void reg();
 void makeReg();
-void pickTime();
+string pickDate();
+string pickTime();
 void login();
-void getRandomCode();
+string getRandomCode();
 
 
 int main(){ // main function
 	int c;
 	logo();
 	cout << "\t\t\t\t1 - LOG IN\n";
-	cout << "\t\t\t\t2 - CREATE AN ACCOUNT\n\t\t\t\tCHOICE: ";
+	cout << "\t\t\t\t2 - CREATE AN ACCOUNT\n\t\t\t\t>: ";
 	cin >> c;
 	switch (c){
 		case 1:
@@ -91,7 +94,7 @@ void menu(){
 	cout << "\t\t\t\t3 - SEARCH PASSENGER\n";
 	cout << "\t\t\t\t4 - CHANGE RESERVATION\n";
 	cout << "\t\t\t\t5 - PRINT RECEIPT\n";
-	cout << "\t\t\t\t6 - QUIT";
+	cout << "\t\t\t\t6 - QUIT\n\t\t\t\t>: ";
 	cin >> choice;
 	system ("cls");
 	switch (choice) {
@@ -112,26 +115,34 @@ void PlaceCursor(const int x, const int y) {
     SetConsoleCursorPosition(hConsole, PlaceCursorHere);
     return;
 }
-
-void makeReg(){
 	Data info;
-	int c;
+void makeReg(){
 	logo();
 	cout << "\t\t\t\tSELECT:\n";
 	cout << "\t\t\t\t1 - ROUND TRIP\n";
-	cout << "\t\t\t\t2 - ONE WAY";
+	cout << "\t\t\t\t2 - ONE WAY\n\t\t\t\t>: ";
 	cin >> c;
 	system ("cls");
 	switch(c){
 		case 1:
+			logo();
 			cout << "\t\t\t\tFLYING FROM: ";
 			cin >> info.flyF;
 			cout << "\t\t\t\tFLYING TO: ";
 			cin >> info.flyT;
-			cout << "\t\t\t\tDEPARTING ON: ";
-			cin >> info.depOn;
-			cout << "\t\t\t\tRETURNING ON: ";
-			cin >> info.retOn;
+			system("cls");	
+			logo();
+			cout << "\n\t\t\t\tDEPARTING ON: ";
+			info.depOn = pickDate();
+			info.depTime = pickTime();
+			system("cls");
+			logo();
+			cout << "\n\t\t\t\tRETURNING ON: ";
+			info.retOn = pickDate();
+			info.retTime = pickTime();
+			system("cls");
+			logo();
+			cout << "\n\t\t\t\tPASENGERS: \n";
 			cout << "\t\t\t\tADULT: ";
 			cin >> info.adult;
 			cout << "\t\t\t\tCHILD(2-11years): ";
@@ -139,14 +150,22 @@ void makeReg(){
 			cout << "\t\t\t\tINFANT(under 2years): ";
 			cin >> info.infant;
 			numPassenger = info.child + info.adult + info.infant;
+			outReceipt();
 			break;
 		case 2:
+			logo();
 			cout << "\t\t\t\tFLYING FROM: ";
 			cin >> info.flyF;
 			cout << "\t\t\t\tFLYING TO: ";
 			cin >> info.flyT;
-			cout << "\t\t\t\tDEPARTING ON: ";
-			cin >> info.depOn;
+			system("cls");	
+			logo();
+			cout << "\n\t\t\t\tDEPARTING ON: ";
+			pickDate();
+			pickTime();
+			system("cls");
+			logo();
+			cout << "\n\t\t\t\tPASENGERS: \n";
 			cout << "\t\t\t\tADULT: ";
 			cin >> info.adult;
 			cout << "\t\t\t\tCHILD(2-11years): ";
@@ -193,27 +212,81 @@ void login() {
 	cin >> pass;
 }
 
-void getRandomCode(){
+string getRandomCode(){
+	string s;
 	int i;
 	char cmptchoice[5];
 	srand(time(NULL));
     for (i=0; i<5; i++){
 		cmptchoice [i] = (90 - (rand() % 26));
     }
-    cout << cmptchoice;
+    s = cmptchoice;
+    return s;
 }
 
-void pickTime(){
-	cout << "\t\t\t\t1 - 7am \n";
+string pickTime(){
+	int a;
+	cout << "\n\t\t\t\tPICK TIME: ";
+	cout << "\n\n\t\t\t\t1 - 7am \n";
 	cout << "\t\t\t\t2 - 9am \n";
 	cout << "\t\t\t\t3 - 11am \n";
 	cout << "\t\t\t\t4 - 2pm \n";
 	cout << "\t\t\t\t5 - 5pm \n";
 	cout << "\t\t\t\t6 - 8pm \n";
+	cout << "\t\t\t\t>: ";
+	cin >> a;
+	switch(a){
+		case 1:
+			return "7am";
+			break;
+		case 2:
+			return "9am";
+			break;
+		case 3:
+			return "11am";
+			break;
+		case 4:
+			return "2pm";
+			break;
+		case 5:
+			return "5pm";
+			break;
+		case 6:
+			return "8am";
+			break;
+		default:
+			cout << "\t\t\t\tINVALID CHOICE!";
+			break;
+	}
 }
 
-void outReciept(){
-	
+string pickDate(){
+	string a;
+	cout << "\n\n\t\t\t\tPlease type the date on mm/dd/yyyy format: \n";
+	cout << "\n\t\t\t\t>: ";
+	cin >> a;
+	return a;
+}
+
+void outReceipt(){
+	ofstream outFile("flightUserData.txt", std::ios_base::app);
+	ifstream file("flightUserData.txt", std::ios_base::app);
+	outFile << "FLIGHT CODE: " << getRandomCode() << endl;
+	outFile << "NAME: " << admin << endl;
+	outFile << "FLYING FROM: " << info.flyF << "AIRPORT" << endl;
+	outFile << "FLYING TO: " << info.flyT << "AIRPORT"  << endl;
+	outFile << "DEPARTING ON: " << info.depOn << endl;
+	outFile << "DEPARTING TIME: " << info.depTime << endl;
+	if (c == 1){
+		outFile << "RETURNING ON: " <<  info.retOn << endl;
+		outFile << "RETURNING TIME: "<< info.retTime << endl;
+		
+	}
+	outFile << "NUMBER OF ADULTS: " << info.adult << endl;
+	outFile << "NUMBER OF CHILD(s): " << info.child << endl;
+	outFile << "NUMBER OF INFANT(s): " << info.infant << endl;
+	outFile << "NUMBER OF PASSENGER(s): " << numPassenger << endl;
+	outFile.close();
 }
 
 
