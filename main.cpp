@@ -29,10 +29,11 @@ class Data{
 //FUNCTIONS
 void outReceipt();
 void menu();
-void PlaceCursor(const int x, const int y); // in case we want to position every text
 bool checklogin(const string &username, const string &password);
 void logo();
 void reg();
+void search();
+void intoData();
 void makeReg();
 string pickDate();
 string pickTime();
@@ -41,36 +42,48 @@ string getRandomCode();
 
 
 int main(){ // main function
+	bool logincheck ;
 	int c;
-	logo();
-	cout << "\t\t\t\t1 - LOG IN\n";
-	cout << "\t\t\t\t2 - CREATE AN ACCOUNT\n\t\t\t\t>: ";
-	cin >> c;
-	switch (c){
-		case 1:
-			login();
-			break;
-		case 2:
-			reg();
-			cout << "\t\t\t\tYOUR ACCOUNT HASE BEEN MADE!!\n";
-			cout << "\t\t\t\t" << system("pause");
-			system("cls");
-			logo();
-			login();
-			break;
-		default:
-			cout << "INVALID CHOICE!";
-			break;
-	}
-
-	bool logincheck = checklogin(admin,pass);
-	if(logincheck){
-		cout << "\n\t\t\t\tWELCOME BACK " << admin << endl;
-		cout << "\t\t\t\t." << system("pause");
-		system("cls");
-		menu();
-	} else {
-		cout << "\n\t\t\t\tINVALID USER CREDENTIALS";
+	bool loop = 1;
+	while(loop){
+		logo();
+		cout << "\t\t\t\t1 - LOG IN\n";
+		cout << "\t\t\t\t2 - CREATE AN ACCOUNT\n";
+		cout << "\t\t\t\t3 - SEARCH PASSENGER\n";
+		cout << "\t\t\t\t4 - EXIT PROGRAM\n\t\t\t\t>: ";
+		cin >> c;
+		switch (c){
+			case 1:
+				login();
+				logincheck = checklogin(admin,pass);
+				if(logincheck){
+					cout << "\n\t\t\t\tWELCOME BACK " << admin << endl;
+					cout << "\t\t\t\t." << system("pause");
+					system("cls");
+					menu();
+				} else {
+					cout << "\n\t\t\t\tINVALID USER CREDENTIALS";
+				}
+				break;
+			case 2:
+				reg();
+				cout << "\t\t\t\tYOUR ACCOUNT HASE BEEN MADE!!\n";
+				cout << "\t\t\t\t" << system("pause");
+				system("cls");
+				c = 1;
+				break;
+			case 3:
+				system ("cls");
+				logo();
+				search();
+				system("pause");
+				break;
+			case 4:
+				return 0;
+			default:
+				cout << "INVALID CHOICE!";
+				break;
+		}
 	}
 }
 
@@ -88,33 +101,31 @@ bool checklogin(const string &username, const string &password) {
 }
 
 void menu(){
-	logo();
-	cout << "\t\t\t\t1 - MAKE RESERVATION\n";
-	cout << "\t\t\t\t2 - CANCEL RESERVATION\n";
-	cout << "\t\t\t\t3 - SEARCH PASSENGER\n";
-	cout << "\t\t\t\t4 - CHANGE RESERVATION\n";
-	cout << "\t\t\t\t5 - PRINT RECEIPT\n";
-	cout << "\t\t\t\t6 - QUIT\n\t\t\t\t>: ";
-	cin >> choice;
-	system ("cls");
-	switch (choice) {
-		case 1:
-			makeReg();
-			break;
+	bool loop=1;
+	while(loop){
+		system("cls");
+		logo();
+		cout << "\t\t\t\t1 - MAKE RESERVATION\n";
+		cout << "\t\t\t\t2 - CANCEL RESERVATION\n";
+		cout << "\t\t\t\t3 - PRINT RECEIPT\n";
+		cout << "\t\t\t\t4 - QUIT\n\t\t\t\t>: ";
+		cin >> choice;
+		system ("cls");
+		switch (choice) {
+			case 1:
+				makeReg();
+				break;
+			case 3:
+				outReceipt();
+				break;
+			case 4:
+				loop = false;
+				break;
+		}
 	}
-	
+
 }
 
-
-
-void PlaceCursor(const int x, const int y) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD PlaceCursorHere;
-    PlaceCursorHere.X = x;
-    PlaceCursorHere.Y = y;
-    SetConsoleCursorPosition(hConsole, PlaceCursorHere);
-    return;
-}
 	Data info;
 void makeReg(){
 	logo();
@@ -150,7 +161,6 @@ void makeReg(){
 			cout << "\t\t\t\tINFANT(under 2years): ";
 			cin >> info.infant;
 			numPassenger = info.child + info.adult + info.infant;
-			outReceipt();
 			break;
 		case 2:
 			logo();
@@ -173,6 +183,7 @@ void makeReg(){
 			cout << "\t\t\t\tINFANT(under 2years): ";
 			cin >> info.infant;
 			numPassenger = info.child + info.adult + info.infant;
+			intoData();
 			break;
 		default:
 			break;
@@ -269,26 +280,104 @@ string pickDate(){
 }
 
 void outReceipt(){
-	ofstream outFile("flightUserData.txt", std::ios_base::app);
-	ifstream file("flightUserData.txt", std::ios_base::app);
+	ofstream outFile("receipt.txt", std::ios_base::app);
+	//ifstream file("flightUserData.txt", std::ios_base::app);
 	outFile << "FLIGHT CODE: " << getRandomCode() << endl;
 	outFile << "NAME: " << admin << endl;
-	outFile << "FLYING FROM: " << info.flyF << "AIRPORT" << endl;
-	outFile << "FLYING TO: " << info.flyT << "AIRPORT"  << endl;
+	outFile << "FLYING FROM: " << info.flyF << " AIRPORT" << endl;
+	outFile << "FLYING TO: " << info.flyT << " AIRPORT"  << endl;
 	outFile << "DEPARTING ON: " << info.depOn << endl;
 	outFile << "DEPARTING TIME: " << info.depTime << endl;
-	if (c == 1){
-		outFile << "RETURNING ON: " <<  info.retOn << endl;
-		outFile << "RETURNING TIME: "<< info.retTime << endl;
-		
-	}
+	outFile << "RETURNING ON: " <<  info.retOn << endl;
+	outFile << "RETURNING TIME: "<< info.retTime << endl;
 	outFile << "NUMBER OF ADULTS: " << info.adult << endl;
 	outFile << "NUMBER OF CHILD(s): " << info.child << endl;
 	outFile << "NUMBER OF INFANT(s): " << info.infant << endl;
 	outFile << "NUMBER OF PASSENGER(s): " << numPassenger << endl;
+	float gtotal = numPassenger * 2020;
+	outFile << "GRAND TOTAL P " << gtotal<< endl;
 	outFile.close();
+
 }
 
+void intoData(){
+	ofstream outFile2("flightDatas.txt", std::ios_base::app);
+	outFile2 << getRandomCode() << endl;
+	outFile2 << admin << endl;
+	outFile2 << info.flyF << " AIRPORT" << endl;
+	outFile2 << info.flyT << " AIRPORT"  << endl;
+	outFile2 << info.depOn << endl;
+	outFile2 << info.depTime << endl;
+	outFile2 <<  info.retOn << endl;
+	outFile2 << info.retTime << endl;
+	outFile2 << info.adult << endl;
+	outFile2 << info.child << endl;
+	outFile2 << info.infant << endl;
+	outFile2 << numPassenger << endl;
+	float gtotal = numPassenger * 2020;
+	outFile2 <<gtotal<< endl;
+	outFile2.close();
+}
+
+void search(){
+	string line;
+	string fnum;
+	ifstream inFile("flightDatas.txt", std::ios_base::app);
+	cout << "\n\t\t\t\t\tTYPE THE FLIGHT CODE: \n\t\t\t\t\t>: ";
+	cin >> fnum;
+	while(!inFile.eof()){
+		inFile >> line;
+		if (line == fnum){
+			for(int i = 0; i < 13;i++){
+				switch (i){
+					case 0:
+						cout <<"\t\t\t\tFLIGHT CODE: " << line << endl;
+						break;
+					case 1:
+						cout <<"\t\t\t\tNAME: " << line << endl;
+						break;
+					case 2:
+						cout <<"\t\t\t\tFLYING FROM: " << line << endl;
+						break;
+					case 3:
+						cout <<"\t\t\t\tFLYING TO: " << line << endl;
+						break;		
+					case 4:
+						cout <<"\t\t\t\tDEPARTING ON: " << line << endl;
+						break;
+					case 5:
+						cout <<"\t\t\t\tDEPARTING TIME: " << line << endl;
+						break;
+					case 6:
+						cout <<"\t\t\t\tRETURNING ON: " << line << endl;
+						break;
+					case 7:
+						cout <<"\t\t\t\tRETURNING TIME: " << line << endl;
+						break;		
+					case 8:
+						cout <<"\t\t\t\tNUMBER OF ADULT(s): "<< line << endl;
+						break;
+					case 9:
+						cout <<"\t\t\t\tNUMBER OF CHILD(s): " << line << endl;
+						break;
+					case 10:
+						cout <<"\t\t\t\tNUMBER OF INFANT(s): " << line << endl;
+						break;
+					case 11:
+						cout <<"\t\t\t\tTOTAL PASSENGERS(s): " << line << endl;
+						break;
+					case 12:
+						cout <<"\t\t\t\tGRAND TOTAL P" << line << endl;
+						break;		
+					default:
+						break;																
+				}
+				inFile >> line;
+			}
+		}
+	}
+	inFile.close();
+}
 
 
 
