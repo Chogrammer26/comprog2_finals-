@@ -20,6 +20,7 @@ bool checklogin(const string &username, const string &password);
 void logo();
 void reg();
 void makeReg();
+void pickTime();
 void login();
 void getRandomCode();
 
@@ -35,8 +36,8 @@ int main(){ // main function
 			break;
 		case 2:
 			reg();
-			cout << "\t\t\t\tYour account has been made!\n";
-			system("pause");
+			cout << "\t\t\t\tYOUR ACCOUNT HASE BEEN MADE!!\n";
+			cout << "\t\t\t\t" << system("pause");
 			system("cls");
 			logo();
 			login();
@@ -97,10 +98,33 @@ void PlaceCursor(const int x, const int y) {
 }
 
 void makeReg(){
+	int c;
 	cout << "SELECT:\n";
 	cout << "1 - ROUND TRIP\n";
 	cout << "2 - ONE WAY\n";
+	switch(c){
+		case 1:
+			cout << "\t\t\t\tFLYING FROM: ";
+			cout << "\t\t\t\tFLYING TO: ";
+			cout << "\t\t\t\tDEPARTING ON: ";
+			cout << "\t\t\t\tRETURNING ON: ;
+			cout << "\t\t\t\tADULT: ;
+			cout << "\t\t\t\tCHILD(2-11years): ";
+			cout << "\t\t\t\tINFANT(under 2years): ";
+			break;
+		case 2:
+			cout << "\t\t\t\tFLYING FROM: ";
+			cout << "\t\t\t\tFLYING TO: ";
+			cout << "\t\t\t\tDEPARTING ON: ";
+			cout << "\t\t\t\tADULT: ;
+			cout << "\t\t\t\tCHILD(2-11years): ";
+			cout << "\t\t\t\tINFANT(under 2years): ";
+			break;
+		default:
+			break;
+	}
 	
+
 }
 
 
@@ -118,9 +142,9 @@ void logo() {
 void reg(){
 	string nUser;
 	string nPass;
-	cout << "				Create a User Name: ";
+	cout << "\t\t\t\tCreate a User Name: ";
 	cin >> nUser;
-	cout << "				Create a Password: ";
+	cout << "\t\t\t\tCreate a Password: ";
 	cin >> nPass;
 	outfile << nUser << ";" <<nPass << endl;
 	outfile.close();
@@ -144,7 +168,14 @@ void getRandomCode(){
     cout << cmptchoice;
 }
 
-
+void pickTime(){
+	cout << "\t\t\t\t1 - 7am \n";
+	cout << "\t\t\t\t2 - 9am \n";
+	cout << "\t\t\t\t3 - 11am \n";
+	cout << "\t\t\t\t4 - 2pm \n";
+	cout << "\t\t\t\t5 - 5pm \n";
+	cout << "\t\t\t\t6 - 8pm \n";
+}
 
 
 
