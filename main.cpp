@@ -39,7 +39,7 @@ string pickDate();
 string pickTime();
 void login();
 string getRandomCode();
-
+string code = getRandomCode();
 
 int main(){ // main function
 	bool logincheck ;
@@ -128,68 +128,34 @@ void menu(){
 
 	Data info;
 void makeReg(){
-	logo();
-	cout << "\t\t\t\tSELECT:\n";
-	cout << "\t\t\t\t1 - ROUND TRIP\n";
-	cout << "\t\t\t\t2 - ONE WAY\n\t\t\t\t>: ";
-	cin >> c;
-	system ("cls");
-	switch(c){
-		case 1:
-			logo();
-			cout << "\t\t\t\tFLYING FROM: ";
-			cin >> info.flyF;
-			cout << "\t\t\t\tFLYING TO: ";
-			cin >> info.flyT;
-			system("cls");	
-			logo();
-			cout << "\n\t\t\t\tDEPARTING ON: ";
-			info.depOn = pickDate();
-			info.depTime = pickTime();
-			system("cls");
-			logo();
-			cout << "\n\t\t\t\tRETURNING ON: ";
-			info.retOn = pickDate();
-			info.retTime = pickTime();
-			system("cls");
-			logo();
-			cout << "\n\t\t\t\tPASENGERS: \n";
-			cout << "\t\t\t\tADULT: ";
-			cin >> info.adult;
-			cout << "\t\t\t\tCHILD(2-11years): ";
-			cin >> info.child;
-			cout << "\t\t\t\tINFANT(under 2years): ";
-			cin >> info.infant;
-			numPassenger = info.child + info.adult + info.infant;
-			break;
-		case 2:
-			logo();
-			cout << "\t\t\t\tFLYING FROM: ";
-			cin >> info.flyF;
-			cout << "\t\t\t\tFLYING TO: ";
-			cin >> info.flyT;
-			system("cls");	
-			logo();
-			cout << "\n\t\t\t\tDEPARTING ON: ";
-			pickDate();
-			pickTime();
-			system("cls");
-			logo();
-			cout << "\n\t\t\t\tPASENGERS: \n";
-			cout << "\t\t\t\tADULT: ";
-			cin >> info.adult;
-			cout << "\t\t\t\tCHILD(2-11years): ";
-			cin >> info.child;
-			cout << "\t\t\t\tINFANT(under 2years): ";
-			cin >> info.infant;
-			numPassenger = info.child + info.adult + info.infant;
-			intoData();
-			break;
-		default:
-			break;
-	}
-	
 
+	system ("cls");
+	logo();
+	cout << "\t\t\t\tFLYING FROM: ";
+	cin >> info.flyF;
+	cout << "\t\t\t\tFLYING TO: ";
+	cin >> info.flyT;
+	system("cls");	
+	logo();
+	cout << "\n\t\t\t\tDEPARTING ON: ";
+	info.depOn = pickDate();
+	info.depTime = pickTime();
+	system("cls");
+	logo();
+	cout << "\n\t\t\t\tRETURNING ON: ";
+	info.retOn = pickDate();
+	info.retTime = pickTime();
+	system("cls");
+	logo();
+	cout << "\n\t\t\t\tPASENGERS: \n";
+	cout << "\t\t\t\tADULT: ";
+	cin >> info.adult;
+	cout << "\t\t\t\tCHILD(2-11years): ";
+	cin >> info.child;
+	cout << "\t\t\t\tINFANT(under 2years): ";
+	cin >> info.infant;
+	numPassenger = info.child + info.adult + info.infant;
+	intoData();
 }
 
 
@@ -223,11 +189,11 @@ void login() {
 	cin >> pass;
 }
 
+// this will get randome code for FLIGHT CODE
 string getRandomCode(){
 	string s;
 	int i;
 	char cmptchoice[5];
-	srand(time(NULL));
     for (i=0; i<5; i++){
 		cmptchoice [i] = (90 - (rand() % 26));
     }
@@ -280,9 +246,10 @@ string pickDate(){
 }
 
 void outReceipt(){
+	system("del.\\receipt.txt"); // this will delete the old receipt
 	ofstream outFile("receipt.txt", std::ios_base::app);
 	//ifstream file("flightUserData.txt", std::ios_base::app);
-	outFile << "FLIGHT CODE: " << getRandomCode() << endl;
+	outFile << "FLIGHT CODE: " << code << endl;
 	outFile << "NAME: " << admin << endl;
 	outFile << "FLYING FROM: " << info.flyF << " AIRPORT" << endl;
 	outFile << "FLYING TO: " << info.flyT << " AIRPORT"  << endl;
@@ -301,8 +268,9 @@ void outReceipt(){
 }
 
 void intoData(){
+	//this will go into flightdata.txt make search algo work
 	ofstream outFile2("flightDatas.txt", std::ios_base::app);
-	outFile2 << getRandomCode() << endl;
+	outFile2 << code << endl;
 	outFile2 << admin << endl;
 	outFile2 << info.flyF << " AIRPORT" << endl;
 	outFile2 << info.flyT << " AIRPORT"  << endl;
@@ -325,6 +293,7 @@ void search(){
 	ifstream inFile("flightDatas.txt", std::ios_base::app);
 	cout << "\n\t\t\t\t\tTYPE THE FLIGHT CODE: \n\t\t\t\t\t>: ";
 	cin >> fnum;
+	// this will find the code and cout the 13lines after it
 	while(!inFile.eof()){
 		inFile >> line;
 		if (line == fnum){
@@ -378,11 +347,5 @@ void search(){
 	}
 	inFile.close();
 }
-
-
-
-
-
-
 
 
